@@ -119,14 +119,14 @@ $coin->api('getBalance',['userIds' => [211984675]]);
 ## Получение ссылки на оплату
 Пример:
 ```php
-    var_dump($coin->api('getPayLink'));
-    var_dump($coin->api('getLink', ['sum' => 15000]));
-    var_dump($coin->api('link', ['sum' => 15000, 'payload' => 123456]));
-    var_dump($coin->api('link', [
+   $coin->api('getPayLink');
+   $coin->api('getLink', ['sum' => 15000]);
+   $coin->api('link', ['sum' => 15000, 'payload' => 123456]);
+   $coin->api('link', [
         'sum' => 15000,
         'payload' => 0,
         'fsum' => false
-    ]));
+    ]);
 ```
 
 | Параметр     | Тип     | Описание                                                                       |                                                                                              
