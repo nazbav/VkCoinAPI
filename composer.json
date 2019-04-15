@@ -1,5 +1,5 @@
 {
-  "name": "nazbav/VkCoinAPI",
+  "name": "nazbav/vk-coin-api",
   "description": "Library for VK Coin API.",
   "keywords": ["PHP-library","VKCOIN","COIN","VK API","VK COIN API"],
   "minimum-stability": "stable",
