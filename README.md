@@ -92,8 +92,8 @@ $coin = new \nazbav\VkCoinAPI\VkCoin(211984675, "45vyv45KJMKouj9retghrebtvrhtreh
 
 | Параметр     | Тип    |
 |--------------|--------|
-| tx_type      | int    |
-| last_tx      | int    |
+| type      | int    |
+| last      | int    |
 
 ## Перевод
 Пример:
@@ -103,7 +103,7 @@ $coin->api('sendTransfer',['to' => 211984675,'amount'=>10000]);
 
 | Параметр     | Тип    | Описание                                             |
 |--------------|--------|------------------------------------------------------|
-| to_id        | int    | ID пользователя, которому будет отправлен перевод    |
+| to           | int    | ID пользователя, которому будет отправлен перевод       |
 | amount       | int    | Сумма перевода в тысячных долях (500 = 0,500 коин)   |
 
 ## Получение баланса
@@ -135,6 +135,7 @@ $coin->api('getBalance',['userIds' => [211984675]]);
 | payload      | int    | Любое число от -2000000000 до 2000000000. Поставь 0, дальше сделаем все сами ;) |
 | fsum         | bool   | Фиксация суммы перевода                                                         |
 | hex          | bool   | Генерация hex-ссылки                                                            |
+
 
 [IMGPHP]: https://img.shields.io/badge/PHP-5.4%5E-brightgreen.svg?style=for-the-badge
 [IMGLICENSE]: https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=for-the-badge
