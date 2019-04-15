@@ -1,0 +1,23 @@
+{
+  "name": "nazbav/VkCoinAPI",
+  "description": "Library for VK Coin API.",
+  "keywords": ["PHP-library","VKCOIN","COIN","VK API","VK COIN API"],
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "nazbav\\VkCoinAPI\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Nazym Bavbekov",
+      "email": "naz.bav@list.ru"
+    }
+  ],
+  "require": {
+    "php": ">=5.6",
+    "ext-curl":"*",
+    "ext-json":"*"
+  }
+}
