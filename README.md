@@ -127,9 +127,6 @@ $coin->api('getBalance',['userIds' => [211984675]]);
         'payload' => 0,
         'fsum' => false
     ]));
-$vkcoin->generatePayLink(15000);
-$vkcoin->generatePayLink(15000, 123456);
-$vkcoin->generatePayLink(15000, 0, false);
 ```
 
 | Параметр     | Тип    | Обязательный?   | Описание                                                                                                             |
