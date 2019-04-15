@@ -9,6 +9,10 @@
   
 ## Подключение
 
+```php
+composer require nazbav/vk-coin-api
+```
+
 1. Через Composer:
 ```php
 include "../vendor/autoload.php";
