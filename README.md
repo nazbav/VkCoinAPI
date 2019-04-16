@@ -2,6 +2,7 @@
 
 Задать вопрос можно в [беседе](https://vk.me/join/AJQ1d6PnhgV0xKfFdpK3ChdC). 
 Библиотека для работы с VK Coin API. Основана на "[документации](https://vk.com/@hs-marchant-api)", и примерах.
+Основано на библиотеке Матвея Вишневсого.
 
   ![VERSION][IMGVERSION]
   ![BUID][IMGBUID]
