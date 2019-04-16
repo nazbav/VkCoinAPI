@@ -110,6 +110,7 @@ $coin->api('sendTransfer',['to' => 211984675,'amount'=>10000]);
 Пример:
 ```php
 $coin->api('getBalance',['userIds' => [211984675]]);
+$coin->api('getBalance'); //Для вывода баланса текущего пользователя
 ```
 
 | Параметр     | Тип    |
