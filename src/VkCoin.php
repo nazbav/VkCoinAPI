@@ -56,7 +56,7 @@ class VkCoin extends VkConModel
     ])
     {
         $params = [];
-        $userIds = $arguments['userIds'] ?: [211984675];
+        $userIds = $arguments['userIds'] ?: [$this->getMerchantId()];
         $params['userIds'] = $userIds;
         $this->setParams($params);
     }
