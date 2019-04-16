@@ -1,6 +1,6 @@
 # VK Coin API
 
-Задать вопрос можно в [беседе](https://vk.me/join/AJQ1d6PnhgV0xKfFdpK3ChdC)
+Задать вопрос можно в [беседе](https://vk.me/join/AJQ1d6PnhgV0xKfFdpK3ChdC). 
 Библиотека для работы с VK Coin API. Основана на "[документации](https://vk.com/@hs-marchant-api)", и примерах.
 
   ![VERSION][IMGVERSION]
