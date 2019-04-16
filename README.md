@@ -1,4 +1,4 @@
-# VK Coin PHP
+# VK Coin API
 
 Библиотека для работы с VK Coin API. Основана на "[документации](https://vk.com/@hs-marchant-api)", и примерах.
 
