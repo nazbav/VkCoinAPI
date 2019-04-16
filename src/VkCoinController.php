@@ -20,6 +20,10 @@ abstract class VkCoinController
      */
     protected $checkResponse = true;
     /**
+     * @var VkCoinMessages
+     */
+    protected $Messages;
+    /**
      * @var array
      */
     protected $params;
@@ -49,10 +53,11 @@ abstract class VkCoinController
      */
     public function __construct($merchantId, $key, $checkResponse = true)
     {
+        $this->setMessages((new VkCoinMessages())->messages());
         if (!file_exists('../config/Language.php'))
             throw new VkCoinException('Language.php is missing.');
         if (!file_exists('../config/Aliases.php'))
-            throw new VkCoinException(VkCoinMessages::msg()['COIN_FATAL_ALIASES']);
+            throw new VkCoinException($this->getMessages()['COIN_FATAL_ALIASES']);
         $this->setCheckResponse($checkResponse);
         $this->setMerchantId($merchantId);
         $this->setKey($key);
@@ -63,11 +68,19 @@ abstract class VkCoinController
     }
 
     /**
-     * @param bool $checkResponse
+     * @param $Messages
      */
-    public function setCheckResponse($checkResponse)
+    private function setMessages($Messages)
     {
-        $this->checkResponse = $checkResponse;
+        $this->Messages = $Messages;
+    }
+
+    /**
+     * @return VkCoinMessages
+     */
+    protected function getMessages()
+    {
+        return $this->Messages;
     }
 
     /**
@@ -123,7 +136,7 @@ abstract class VkCoinController
      */
     public function __call($name, $arguments)
     {
-        throw new VkCoinException(VkCoinMessages::msg()['COIN_METHOD_ERROR']);
+        throw new VkCoinException($this->getMessages()['COIN_METHOD_ERROR']);
     }
 
     /**
@@ -132,6 +145,14 @@ abstract class VkCoinController
     public function getCheckResponse()
     {
         return $this->checkResponse;
+    }
+
+    /**
+     * @param bool $checkResponse
+     */
+    public function setCheckResponse($checkResponse)
+    {
+        $this->checkResponse = $checkResponse;
     }
 
     /**

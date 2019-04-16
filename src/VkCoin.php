@@ -60,6 +60,7 @@ class VkCoin extends VkConModel
         $params['userIds'] = $userIds;
         $this->setParams($params);
     }
+
     /**
      * @param $arguments
      * @return string
@@ -75,7 +76,11 @@ class VkCoin extends VkConModel
         $merchant_id = $this->getMerchantId();
 
         $sum = $arguments['sum'];
-        $payload = $arguments['payload'] == 0 ? rand(-2000000000, 2000000000) : $arguments['payload'];
+
+        $payload = $arguments['payload'] ?
+            rand(-2000000000, 2000000000) :
+            $arguments['payload'];
+
         $fsum = $arguments['fsum'];
         $hex = $arguments['hex'];
 
@@ -86,9 +91,23 @@ class VkCoin extends VkConModel
             $merchant_id = dechex($this->getMerchantId());
             $sum = dechex($sum);
             $payload = dechex($payload);
-            $link = sprintf('%s#m%d_%d_%d%s', $this->getCoinUrl(), $merchant_id, $sum, $payload, $fsum ? "" : "_1");
+
+            $link = sprintf('%s#m%d_%d_%d%s',
+                $this->getCoinUrl(),
+                $merchant_id,
+                $sum, $payload,
+                $fsum ? "" : "_1"
+            );
+
         } else {
-            $link = sprintf('%s#m%d_%d_%d%s', $this->getCoinUrl(), $merchant_id, $sum, $payload, $fsum ? "" : "_1");
+
+            $link = sprintf('%s#m%d_%d_%d%s', $this->getCoinUrl(),
+                $merchant_id,
+                $sum,
+                $payload,
+                $fsum ? "" : "_1"
+            );
+
         }
         return $link;
     }

@@ -64,7 +64,11 @@ class VkConModel extends VkCoinController
         ]);
         $return = curl_exec($ch);
         if (curl_error($ch))
-            return json_encode(['status' => false, 'response' => ['code' => 100, 'message' => curl_error($ch)]]);
+            return json_encode(['status' => false, 'response' =>
+                ['code' => 100,
+                    'message' => curl_error($ch)
+                ]
+            ]);
         curl_close($ch);
         return $return;
 
@@ -82,16 +86,16 @@ class VkConModel extends VkCoinController
                 if ($response['status'] == false && isset($response['error']))
                     switch ($response['error']['code']) {
                         case 422:
-                            $error = VkCoinMessages::msg()['COIN_FERROR_METHOD_PARAMETERS'];
+                            $error = $this->getMessages()['COIN_FERROR_METHOD_PARAMETERS'];
                             switch ($response['error']['message']) {
                                 case 'BAD_ARGS':
-                                    $error = VkCoinMessages::msg()['COIN_FERROR_METHOD_BAD_ARGS'];
+                                    $error = $this->getMessages()['COIN_FERROR_METHOD_BAD_ARGS'];
                                     break;
                                 case 'merchantId or key is not valid':
-                                    $error = VkCoinMessages::msg()['COIN_FERROR_INVALID_IDRKEY'];
+                                    $error = $this->getMessages()['COIN_FERROR_INVALID_IDRKEY'];
                                     break;
                                 case 'tx is empty':
-                                    $error = VkCoinMessages::msg()['COIN_FERROR_METHOD_INVALID_TX'];
+                                    $error = $this->getMessages()['COIN_FERROR_METHOD_INVALID_TX'];
                                     break;
 
                             }
@@ -101,16 +105,16 @@ class VkConModel extends VkCoinController
                             throw new VkCoinException($response['error']['message']);
                             break;
                         default:
-                            throw new VkCoinException(VkCoinMessages::msg()['COIN_FERROR_METHOD_PARAMETERS']);
+                            throw new VkCoinException($this->getMessages()['COIN_FERROR_METHOD_PARAMETERS']);
                             break;
                     }
                 elseif ($response['status'] == true && isset($response['response'])) {
                     if (isset($response['response'][0]['from_id']) && $response['response'][0]['from_id'] == 'hs')
-                        throw new VkCoinException(VkCoinMessages::msg()['COIN_TRANSFER_PARAM_ERROR']);;
+                        throw new VkCoinException($this->getMessages()['COIN_TRANSFER_PARAM_ERROR']);;
                 } elseif (isset($response['response']) && empty($response['response'])) {
-                    throw new VkCoinException(VkCoinMessages::msg()['COIN_FERROR_METHOD_PARAMETERS']);
+                    throw new VkCoinException($this->getMessages()['COIN_FERROR_METHOD_PARAMETERS']);
                 }
-            } else  throw new VkCoinException(VkCoinMessages::msg()['COIN_FATAL']);
+            } else  throw new VkCoinException($this->getMessages()['COIN_FATAL']);
         }
     }
 

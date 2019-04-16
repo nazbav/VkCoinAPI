@@ -9,7 +9,7 @@
   
 ## Подключение
 
-```php
+```bash
 composer require nazbav/vk-coin-api
 ```
 
@@ -83,6 +83,19 @@ include "../vendor/autoload.php";
 
 $coin = new \nazbav\VkCoinAPI\VkCoin(211984675, "45vyv45KJMKouj9retghrebtvrhtrehryvt54ONopiino", true);
 ```
+## Error code 100
+
+В случай если библиотеке не удалось получить данные c сервера, и т.д. (ошибки curl).
+Будет выдана 100 ошибка:
+
+```json
+{"status":false,
+      "error":{
+        "code":100,
+        "message":"Описание ошибки."
+      }
+}
+```
 
 ## Получение списка транзакций
 Пример:
@@ -140,5 +153,5 @@ $coin->api('getBalance'); //Для вывода баланса текущего 
 
 [IMGPHP]: https://img.shields.io/badge/PHP-5.4%5E-brightgreen.svg?style=for-the-badge
 [IMGLICENSE]: https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=for-the-badge
-[IMGVERSION]: https://img.shields.io/badge/LAST%20VERSION-1.0.0-blue.svg?style=for-the-badge
+[IMGVERSION]: https://img.shields.io/badge/LAST%20VERSION-1.0.3-blue.svg?style=for-the-badge
 [IMGBUID]: https://img.shields.io/badge/LAST%20BUILD-16.04.19-red.svg?style=for-the-badge

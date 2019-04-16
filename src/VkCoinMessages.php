@@ -19,7 +19,7 @@ class VkCoinMessages
     /**
      *
      */
-    static function msg()
+    public function messages()
     {
         if (!self::$messages) {
             self::setMessages(include_once '../config/Language.php');
@@ -30,7 +30,7 @@ class VkCoinMessages
     /**
      * @param mixed $messages
      */
-    private static function setMessages($messages)
+    private function setMessages($messages)
     {
         self::$messages = $messages;
     }
@@ -38,7 +38,7 @@ class VkCoinMessages
     /**
      * @return mixed
      */
-    private static function getMessages()
+    private function getMessages()
     {
         return self::$messages;
     }
