@@ -5,7 +5,6 @@
 и библиотеке [Матвея Вишневсого](https://github.com/slmatthew/vk-coin-php).
 
   ![VERSION][IMGVERSION]
-  ![BUID][IMGBUID]
   ![PHP][IMGPHP]
   ![LICENSE][IMGLICENSE]
   
