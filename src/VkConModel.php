@@ -17,19 +17,31 @@ class VkConModel extends VkCoinController
 {
 
     /**
-     * @var
+     * @param $float
+     * @return int
      */
-    private $response;
+    public function floatCoin($float)
+    {
+        return (int)($float * 1e3);
+    }
+
+    /**
+     * @param $coin
+     * @return int
+     */
+    public function coinFloat($coin)
+    {
+        return (float)($coin / 1e3);
+    }
 
     /**
      * @param $method
-     * @return array|false|mixed|string
+     * @return mixed
      */
     protected function callAPI($method)
     {
         $host = sprintf('https://%s/%s/', $this->getHost(), $method);
         $response = $this->postCurl($host, $this->getParams());
-        $response = json_decode($response, true);
 
         if ($response) {
             $return = ['status' => true];
@@ -48,7 +60,7 @@ class VkConModel extends VkCoinController
     /**
      * @param $host
      * @param $parameters
-     * @return false|mixed|string
+     * @return mixed
      */
     protected function postCurl($host, $parameters)
     {
@@ -64,14 +76,13 @@ class VkConModel extends VkCoinController
         ]);
         $return = curl_exec($ch);
         if (curl_error($ch))
-            return json_encode(['status' => false, 'response' =>
+            return ['status' => false, 'response' =>
                 ['code' => 100,
                     'message' => curl_error($ch)
                 ]
-            ]);
+            ];
         curl_close($ch);
-        return $return;
-
+        return json_decode($return, true);
     }
 
     /**
@@ -116,21 +127,5 @@ class VkConModel extends VkCoinController
                 }
             } else  throw new VkCoinException($this->getMessages()['COIN_FATAL']);
         }
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
-     * @param mixed $response
-     */
-    protected function setResponse($response)
-    {
-        $this->response = $response;
     }
 }

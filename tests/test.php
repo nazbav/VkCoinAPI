@@ -12,7 +12,7 @@ use nazbav\VkCoinAPI\VkCoinException;
 include "../vendor/autoload.php";
 
 try {
-    $coin = new \nazbav\VkCoinAPI\VkCoin(211984675, "",false);
+    $coin = new \nazbav\VkCoinAPI\VkCoin(211984675, "gsddfgddfdffddfdfdfdfdfdfsddfhgsdfgdsw",false);
 
     var_dump($coin->api('getTransactions'));
     var_dump($coin->api('transactions', ['type' => 1]));
@@ -26,9 +26,10 @@ try {
         'payload' => 0,
         'fsum' => false
     ]));
-//228173736
-    var_dump($coin->api('sendTransfer',['to' => 228173736,'amount'=>1]));
-    var_dump($coin->api('balance',['userIds' => [211984675]]));
+
+
+    var_dump($coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->floatCoin(1)]));
+    var_dump($coin->api('balance'));
 
 } catch (VkCoinException $e) {
     echo $e;

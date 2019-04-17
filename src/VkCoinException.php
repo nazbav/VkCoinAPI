@@ -9,6 +9,10 @@
 namespace nazbav\VkCoinAPI;
 
 
+/**
+ * Class VkCoinException
+ * @package nazbav\VkCoinAPI
+ */
 class VkCoinException extends \Exception
 {
 

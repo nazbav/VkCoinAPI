@@ -2,7 +2,7 @@
 
 Задать вопрос можно в [беседе](https://vk.me/join/AJQ1d6PnhgV0xKfFdpK3ChdC). 
 Библиотека для работы с VK Coin API. Основана на "[документации](https://vk.com/@hs-marchant-api)", 
-основано на библиотеке [Матвея Вишневсого](https://github.com/slmatthew/vk-coin-php).
+и библиотеке [Матвея Вишневсого](https://github.com/slmatthew/vk-coin-php).
 
   ![VERSION][IMGVERSION]
   ![BUID][IMGBUID]
@@ -52,18 +52,19 @@ try {
 
 Их вы можете указывать в параметре метода, для упращения работы.
 
-| Имя      | Псевдоним          |  Описание                               |
-|----------|--------------------|-----------------------------------------|
-| tx       | getTransactions    | Список транзакций                       |
-| tx       | transactions       | Список транзакций                       |
-| link     | getPayLink         | Платежная ссылкка                       |
-| link     | getLink            | Платежная ссылкка                       |
-| send     | transfer           | Отправка перевода                       |
-| send     | sendTransfer       | Отправка перевода                       |
-| alias    | getAliases         | Список псевдонимов                      |
-| alias    | aliases            | Список псевдонимов                      |
-| score    | getBalance         | Баланс игрока                           |
-| score    | balance            | Баланс игрока                           |
+| Имя       | Псевдоним          |  Описание                               |
+|-----------|--------------------|-----------------------------------------|
+| tx        | getTransactions    | Список транзакций                       |
+| tx        | transactions       | Список транзакций                       |
+| link      | getPayLink         | Платежная ссылкка                       |
+| link      | getLink            | Платежная ссылкка                       |
+| send      | transfer           | Отправка перевода                       |
+| send      | sendTransfer       | Отправка перевода                       |
+| send      | pay                | Отправка перевода                       |
+| alias     | getAliases         | Список псевдонимов                      |
+| alias     | aliases            | Список псевдонимов                      |
+| score     | getBalance         | Баланс игрока                           |
+| score     | balance            | Баланс игрока                           |
 
 ## Формат ответа
 
@@ -113,7 +114,7 @@ $coin = new \nazbav\VkCoinAPI\VkCoin(211984675, "45vyv45KJMKouj9retghrebtvrhtreh
 ## Перевод
 Пример:
 ```php
-$coin->api('sendTransfer',['to' => 211984675,'amount'=>10000]);
+$coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->floatCoin(1)]);
 ```
 
 | Параметр     | Тип    | Описание                                             |
@@ -124,6 +125,7 @@ $coin->api('sendTransfer',['to' => 211984675,'amount'=>10000]);
 ## Получение баланса
 Пример:
 ```php
+$coin->api('getBalance');
 $coin->api('getBalance',['userIds' => [211984675]]);
 $coin->api('getBalance'); //Для вывода баланса текущего пользователя
 ```
@@ -153,7 +155,36 @@ $coin->api('getBalance'); //Для вывода баланса текущего 
 | hex          | bool   | Генерация hex-ссылки                                                            |
 
 
-[IMGPHP]: https://img.shields.io/badge/PHP-5.4%5E-brightgreen.svg?style=for-the-badge
+## функции библиотеки
+
+1. Перевод числа с плавающей кочкой в коины
+```php
+$coin->floatCoin(100.000); //100000
+$coin->floatCoin(100.435); //100435
+``` 
+НЕ жизненный пример: отправка 1 коина (1.000) пользователю:
+```php
+$coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->floatCoin(1)]);//1000
+```
+2. Перевод коинов в число с плавающей кочкой.
+```php
+$coin->coinFloat(100000); //100.000
+$coin->coinFloat(100435); //100.435
+```
+НЕ жизненный пример: запрос баланса мерча, разбор ответа, конвертация в float:
+```php
+$coin->coinFloat($coin->api('balance')['response'][211984675]); //float(124414.662)
+```
+3. Получение Key
+```php
+$coin->getKey();
+```
+4. Получение MerchantId
+```php
+$coin->getMerchantId();
+```
+
+
+[IMGPHP]: https://img.shields.io/badge/PHP-7.1%5E-brightgreen.svg?style=for-the-badge
 [IMGLICENSE]: https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=for-the-badge
-[IMGVERSION]: https://img.shields.io/badge/LAST%20VERSION-1.0.3-blue.svg?style=for-the-badge
-[IMGBUID]: https://img.shields.io/badge/LAST%20BUILD-16.04.19-red.svg?style=for-the-badge
+[IMGVERSION]: https://img.shields.io/badge/LAST%20VERSION-1.1.0-red.svg?style=for-the-badge

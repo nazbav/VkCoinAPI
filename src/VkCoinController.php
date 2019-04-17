@@ -16,13 +16,30 @@ namespace nazbav\VkCoinAPI;
 abstract class VkCoinController
 {
     /**
-     * @var array
+     * @var string
+     */
+    const HOSTNAME = 'coin-without-bugs.vkforms.ru/merchant';
+    /**
+     * @var string
+     */
+    const COIN_URL = 'vk.com/coin';
+
+    /**
+     * @var
+     */
+    protected $directory;
+    /**
+     * @var array | string
+     */
+    protected $response;
+    /**
+     * @var bool
      */
     protected $checkResponse = true;
     /**
-     * @var VkCoinMessages
+     * @var array
      */
-    protected $Messages;
+    protected $messages;
     /**
      * @var array
      */
@@ -30,19 +47,11 @@ abstract class VkCoinController
     /**
      * @var string
      */
-    private $host = 'coin-without-bugs.vkforms.ru/merchant';
-    /**
-     * @var string
-     */
-    private $coinUrl = 'vk.com/coin';
-    /**
-     * @var string
-     */
-    private $key = "";
+    protected $merchkey = "";
     /**
      * @var int
      */
-    private $merchantId = 0;
+    protected $merchantId = 0;
 
     /**
      * VkCoinController constructor.
@@ -53,10 +62,12 @@ abstract class VkCoinController
      */
     public function __construct($merchantId, $key, $checkResponse = true)
     {
-        $this->setMessages((new VkCoinMessages())->messages());
-        if (!file_exists('../config/Language.php'))
+        $this->setDir(dirname(dirname(__FILE__)));
+        if (!file_exists($this->getDir() . '/config/Language.php'))
             throw new VkCoinException('Language.php is missing.');
-        if (!file_exists('../config/Aliases.php'))
+        else
+            $this->setMessages((new VkCoinMessages())->messages());
+        if (!file_exists($this->getDir() . '/config/Aliases.php'))
             throw new VkCoinException($this->getMessages()['COIN_FATAL_ALIASES']);
         $this->setCheckResponse($checkResponse);
         $this->setMerchantId($merchantId);
@@ -68,20 +79,48 @@ abstract class VkCoinController
     }
 
     /**
-     * @param $Messages
+     * @param mixed $dir
      */
-    private function setMessages($Messages)
+    protected function setDir($dir)
     {
-        $this->Messages = $Messages;
+        $this->directory = $dir;
     }
 
     /**
-     * @return VkCoinMessages
+     * @return mixed
+     */
+    protected function getDir()
+    {
+        return $this->directory;
+    }
+
+    /**
+     * @param $Messages
+     */
+    private function setMessages(array $Messages)
+    {
+        $this->messages = $Messages;
+    }
+
+    /**
+     * @return array
      */
     protected function getMessages()
     {
-        return $this->Messages;
+        return $this->messages;
     }
+
+    /**
+     * @param string $key
+     */
+    protected function setKey($key)
+    {
+        $this->merchkey = $key;
+    }
+
+    /**
+     * @return mixed
+     */
 
     /**
      * @param $method
@@ -91,7 +130,7 @@ abstract class VkCoinController
     public function api($method, $parameters = [])
     {
         $aliases = [];
-        if (file_exists('../config/Aliases.php')) $aliases = require '../config/Aliases.php';
+        if (file_exists($this->getDir() . '/config/Aliases.php')) $aliases = require $this->getDir() . '/config/Aliases.php';
         //Алиасы для методов.
         $method = strtr($method, $aliases);
         if ($parameters)
@@ -108,12 +147,6 @@ abstract class VkCoinController
     }
 
     /**
-     * @param $response
-     * @return mixed
-     */
-    abstract protected function setResponse($response);
-
-    /**
      * @param $method
      * @return mixed
      */
@@ -127,7 +160,18 @@ abstract class VkCoinController
     /**
      * @return mixed
      */
-    abstract protected function getResponse();
+    protected function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
+     * @param array|string $response
+     */
+    public function setResponse($response)
+    {
+        $this->response = $response;
+    }
 
     /**
      * @param $name
@@ -140,65 +184,17 @@ abstract class VkCoinController
     }
 
     /**
-     * @return array
-     */
-    public function getCheckResponse()
-    {
-        return $this->checkResponse;
-    }
-
-    /**
-     * @param bool $checkResponse
-     */
-    public function setCheckResponse($checkResponse)
-    {
-        $this->checkResponse = $checkResponse;
-    }
-
-    /**
      * @return string
      */
-    protected function getCoinUrl()
+    public function getKey()
     {
-        return $this->coinUrl;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getParams()
-    {
-        return $this->params;
-    }
-
-    /**
-     * @param array $params
-     */
-    protected function setParams($params)
-    {
-        $this->params = array_merge($this->params, $params);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getKey()
-    {
-        return $this->key;
-    }
-
-    /**
-     * @param string $key
-     */
-    protected function setKey($key)
-    {
-        $this->key = $key;
+        return $this->merchkey;
     }
 
     /**
      * @return int
      */
-    protected function getMerchantId()
+    public function getMerchantId()
     {
         return $this->merchantId;
     }
@@ -212,11 +208,51 @@ abstract class VkCoinController
     }
 
     /**
+     * @return bool
+     */
+    protected function getCheckResponse()
+    {
+        return $this->checkResponse;
+    }
+
+    /**
+     * @param bool $checkResponse
+     */
+    protected function setCheckResponse($checkResponse)
+    {
+        $this->checkResponse = $checkResponse;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCoinUrl()
+    {
+        return self::COIN_URL;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getParams()
+    {
+        return $this->params;
+    }
+
+    /**
+     * @param array $params
+     */
+    protected function setParams(array $params)
+    {
+        $this->params = array_merge($this->params, $params);
+    }
+
+    /**
      * @return string
      */
     protected function getHost()
     {
-        return $this->host;
+        return self::HOSTNAME;
     }
 
     /**

@@ -9,6 +9,10 @@
 namespace nazbav\VkCoinAPI;
 
 
+/**
+ * Class VkCoinMessages
+ * @package nazbav\VkCoinAPI
+ */
 class VkCoinMessages
 {
     /**
@@ -22,7 +26,7 @@ class VkCoinMessages
     public function messages()
     {
         if (!self::$messages) {
-            self::setMessages(include_once '../config/Language.php');
+            self::setMessages(require dirname(dirname(__FILE__)) . '/config/Language.php');
         }
         return self::getMessages();
     }

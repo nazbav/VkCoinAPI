@@ -9,12 +9,16 @@
 namespace nazbav\VkCoinAPI;
 
 
+/**
+ * Class VkCoin
+ * @package nazbav\VkCoinAPI
+ */
 class VkCoin extends VkConModel
 {
     /**
      * @param $arguments
      */
-    protected function tx($arguments = [
+    protected function tx(array $arguments = [
         'type' => 1,
         'last' => -1,
     ])
@@ -33,7 +37,7 @@ class VkCoin extends VkConModel
      *
      * @param $arguments
      */
-    protected function send($arguments = [
+    protected function send(array $arguments = [
         'to' => 211984675,
         'amount' => 10000,
     ])
@@ -51,7 +55,7 @@ class VkCoin extends VkConModel
      *
      * @param $arguments
      */
-    protected function score($arguments = [
+    protected function score(array $arguments = [
         'userIds' => [211984675],
     ])
     {
@@ -65,7 +69,7 @@ class VkCoin extends VkConModel
      * @param $arguments
      * @return string
      */
-    protected function link($arguments = [
+    protected function link(array $arguments = [
         'sum' => 0,
         'payload' => 0,
         'fsum' => true,//fixed sum
@@ -116,7 +120,7 @@ class VkCoin extends VkConModel
      * @param $arguments
      * @return array|mixed
      */
-    protected function alias($arguments = [])
+    protected function alias(array $arguments = [])
     {
         $aliases = require '../config/Aliases.php';
         return $aliases;
