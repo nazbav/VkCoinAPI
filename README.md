@@ -184,6 +184,6 @@ $coin->getMerchantId();
 ```
 
 
-[IMGPHP]: https://img.shields.io/badge/PHP-7.1%5E-brightgreen.svg?style=for-the-badge
+[IMGPHP]: https://img.shields.io/badge/PHP-5.4%5E-brightgreen.svg?style=for-the-badge
 [IMGLICENSE]: https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=for-the-badge
 [IMGVERSION]: https://img.shields.io/badge/LAST%20VERSION-1.1.0-red.svg?style=for-the-badge
