@@ -28,7 +28,7 @@ try {
         return false;
     }
 
-    if (isset($request) && !empty($request)) {
+    if (!empty($request)) {
         $merchkey = $coin->getKey();
         if (check_request($request, $merchkey)) {
 
