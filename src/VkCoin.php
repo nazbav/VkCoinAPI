@@ -15,6 +15,28 @@ namespace nazbav\VkCoinAPI;
  */
 class VkCoin extends VkConModel
 {
+    /**
+     * @param array $arguments
+     */
+    protected function set(array $arguments = [
+        'name' => "",
+        'status ' => 0,
+        'callback' => null
+    ])
+    {
+        $params = [];
+
+        if (isset($arguments['callback']))
+            $params['callback'] = $arguments['callback'];
+
+        if (isset($arguments['status']) && !empty($arguments['status']))
+            $params['status'] = $arguments['status'];
+
+        if (isset($arguments['name']) && !empty($arguments['name']))
+            $params['name'] = $arguments['name'];
+
+        $this->setParams($params);
+    }
 
     /**
      * @param array $arguments
@@ -102,7 +124,7 @@ class VkCoin extends VkConModel
 
         } else {
 
-            $link = sprintf('%s#m%s_%s_%s%s', $this->getCoinUrl(),
+            $link = sprintf('%s#x%s_%s_%s%s', $this->getCoinUrl(),
                 $merchant_id,
                 $sum,
                 $payload,

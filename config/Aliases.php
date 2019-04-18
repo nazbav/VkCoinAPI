@@ -21,4 +21,7 @@ return [
     //balance
     'getBalance'=>'score',
     'balance'=>'score',
+    //settings
+    'config'=>'set',
+    'settings'=>'set'
 ];
