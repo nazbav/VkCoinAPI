@@ -154,7 +154,7 @@ $coin->api('getBalance'); //Для вывода баланса текущего 
 | hex          | bool   | Генерация hex-ссылки                                                            |
 
 
-## функции библиотеки
+## Функции библиотеки
 
 * **Получение Key**
 
@@ -179,6 +179,7 @@ $coin->toCoin(100.435); //100435
 
 ```php
 $coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->toCoin(1)]);//1000
+$coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->toCoin(1.000)]);//1000
 ```
 
 * **Перевод коинов в число с плавающей точкой**
@@ -200,7 +201,7 @@ $coin->toFloat($coin->api('balance')['response'][211984675]); //float(124414.662
 $coin->toFloat($coin->getPercent(75, $coin->toCoin(1)));//75% от 1 коина (1,000)
 ``` 
 
-Пример: 75% от 10.000 VKC = 7.500 VKC
+Пример: 75% от 10.000 VKC = 7.500 VKC:
 
 ```php
 $coin->toFloat($coin->getPersent(75, $coin->toCoin(10)));
@@ -213,12 +214,22 @@ $coin->toFloat($coin->getPersent(75, $coin->toCoin(10)));
 $coin->whatPercent($coin->toFloat(1),$coin->toFloat(100));
 ```
 
-Пример: во сколько процетов баланс магазина id539620705 больше баланса магазина id211984675. 
+Пример: на сколько процетов баланс пользователя id539620705 больше баланса пользователя id211984675:
 
 ```php
-    $coin->whatPercent($coin->toFloat($coin->api('balance',['userIds'=>[539620705]])['response'][539620705]),
-        $coin->toFloat($coin->api('balance')['response'][211984675]));   
+$coin->whatPersent($account2, $account1)
 ```   
+Сколько процентов составляет баланс пользователя id211984675 от баланса пользователя id539620705:
+```php
+$coin->whatPersent($account1, $account2)
+```   
+
+Даные в примерах:
+```php
+ $balance = $coin->api('balance', ['userIds' => [539620705, 211984675]])['response'];
+     $account1 = $coin->toFloat($balance[211984675]);
+    $account2 = $coin->toFloat($balance[539620705]);
+```
 
 [IMGPHP]: https://img.shields.io/badge/PHP-7.1%5E-brightgreen.svg?style=for-the-badge
 [IMGLICENSE]: https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=for-the-badge
