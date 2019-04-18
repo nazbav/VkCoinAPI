@@ -49,6 +49,7 @@ class VkCoin extends VkConModel
         $params['amount'] = $amount;
         $this->setParams($params);
     }
+
     /**
      * Если запустить без запроса параметров, то получится донат автору))
      *
@@ -59,7 +60,7 @@ class VkCoin extends VkConModel
     ])
     {
         $params = [];
-        $userIds = $arguments['userIds'] ?: [$this->getMerchantId()];
+        $userIds = isset($arguments['userIds']) ? $arguments['userIds'] : [$this->getMerchantId()];
         $params['userIds'] = $userIds;
         $this->setParams($params);
     }
