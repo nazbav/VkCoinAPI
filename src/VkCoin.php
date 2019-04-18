@@ -15,8 +15,9 @@ namespace nazbav\VkCoinAPI;
  */
 class VkCoin extends VkConModel
 {
+
     /**
-     * @param $arguments
+     * @param array $arguments
      */
     protected function tx(array $arguments = [
         'type' => 1,
@@ -33,9 +34,7 @@ class VkCoin extends VkConModel
     }
 
     /**
-     * Если запустить без запроса параметров, то получится донат автору))
-     *
-     * @param $arguments
+     * @param array $arguments
      */
     protected function send(array $arguments = [
         'to' => 211984675,
@@ -51,9 +50,7 @@ class VkCoin extends VkConModel
     }
 
     /**
-     * Если запустить без запроса параметров, то получится донат автору))
-     *
-     * @param $arguments
+     * @param array $arguments
      */
     protected function score(array $arguments = [
         'userIds' => [211984675],
@@ -66,7 +63,7 @@ class VkCoin extends VkConModel
     }
 
     /**
-     * @param $arguments
+     * @param array $arguments
      * @return string
      */
     protected function link(array $arguments = [
