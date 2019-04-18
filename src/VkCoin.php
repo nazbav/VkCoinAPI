@@ -23,8 +23,8 @@ class VkCoin extends VkConModel
         'last' => -1,
     ])
     {
-        $type = $arguments['type'] ?: 1;
-        $last = $arguments['last'] ?: -1;
+        $type = isset($arguments['type']) ? $arguments['type'] : 1;
+        $last = isset($arguments['last']) ? $arguments['last'] : -1;
         $params = ['tx' => [$type]];
         if ($last != -1) {
             $params['lastTx'] = $last;
@@ -43,13 +43,12 @@ class VkCoin extends VkConModel
     ])
     {
         $params = [];
-        $to = $arguments['to'] ?: 211984675;
-        $amount = $arguments['amount'] ?: 10000;
+        $to = isset($arguments['to']) ? $arguments['to'] : 211984675;
+        $amount = isset($arguments['amount']) ? $arguments['amount'] : 1e3;
         $params['toId'] = $to;
         $params['amount'] = $amount;
         $this->setParams($params);
     }
-
     /**
      * Если запустить без запроса параметров, то получится донат автору))
      *
@@ -71,41 +70,41 @@ class VkCoin extends VkConModel
      */
     protected function link(array $arguments = [
         'sum' => 0,
-        'payload' => 0,
         'fsum' => true,//fixed sum
-        'hex' => true
+        'hex' => true,
+        'payload' => 0
     ])
     {
 
         $merchant_id = $this->getMerchantId();
+        $sum = isset($arguments['sum']) ? $arguments['sum'] : 1e3;
+        $fsum = isset($arguments['fsum']) ? $arguments['fsum'] : true;
+        $hex = isset($arguments['hex']) ? $arguments['hex'] : true;
 
-        $sum = $arguments['sum'];
-
-        $payload = $arguments['payload'] ?
+        $payload = $arguments['payload'] == 0 ?
             rand(-2000000000, 2000000000) :
             $arguments['payload'];
 
-        $fsum = $arguments['fsum'];
-        $hex = $arguments['hex'];
 
         if (!$sum) {
-            $link = sprintf('%s#t%d', $this->getCoinUrl(), $merchant_id);
+            $link = sprintf('%s#t%s', $this->getCoinUrl(), $merchant_id);
             return $link;
         } else if ($hex) {
             $merchant_id = dechex($this->getMerchantId());
             $sum = dechex($sum);
             $payload = dechex($payload);
 
-            $link = sprintf('%s#m%d_%d_%d%s',
+            $link = sprintf('%s#m%s_%s_%s%s',
                 $this->getCoinUrl(),
                 $merchant_id,
-                $sum, $payload,
+                $sum,
+                $payload,
                 $fsum ? "" : "_1"
             );
 
         } else {
 
-            $link = sprintf('%s#m%d_%d_%d%s', $this->getCoinUrl(),
+            $link = sprintf('%s#m%s_%s_%s%s', $this->getCoinUrl(),
                 $merchant_id,
                 $sum,
                 $payload,
