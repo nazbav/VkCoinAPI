@@ -20,7 +20,7 @@ class VkConModel extends VkCoinController
      * @param $float
      * @return int
      */
-    public function floatCoin($float)
+    public function toCoin($float)
     {
         return (int)($float * 1e3);
     }
@@ -29,9 +29,27 @@ class VkConModel extends VkCoinController
      * @param $coin
      * @return int
      */
-    public function coinFloat($coin)
+    public function toFloat($coin)
     {
         return (float)($coin / 1e3);
+    }
+
+    /**
+     * @param $float
+     * @return int
+     */
+    public function getPersent($per, $coin)
+    {
+        return (float)($per / 1e2) * $coin;
+    }
+
+    /**
+     * @param $float
+     * @return int
+     */
+    public function whatPersent($coin, $all)
+    {
+        return (float)($coin * 1e2) / $all;
     }
 
     /**

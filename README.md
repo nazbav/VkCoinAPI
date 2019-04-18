@@ -113,7 +113,7 @@ $coin = new \nazbav\VkCoinAPI\VkCoin(211984675, "45vyv45KJMKouj9retghrebtvrhtreh
 ## Перевод
 Пример:
 ```php
-$coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->floatCoin(1)]);
+$coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->toCoin(1)]);
 ```
 
 | Параметр     | Тип    | Описание                                             |
@@ -156,34 +156,70 @@ $coin->api('getBalance'); //Для вывода баланса текущего 
 
 ## функции библиотеки
 
-1. Перевод числа с плавающей кочкой в коины
-```php
-$coin->floatCoin(100.000); //100000
-$coin->floatCoin(100.435); //100435
-``` 
-НЕ жизненный пример: отправка 1 коина (1.000) пользователю:
-```php
-$coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->floatCoin(1)]);//1000
-```
-2. Перевод коинов в число с плавающей кочкой.
-```php
-$coin->coinFloat(100000); //100.000
-$coin->coinFloat(100435); //100.435
-```
-НЕ жизненный пример: запрос баланса мерча, разбор ответа, конвертация в float:
-```php
-$coin->coinFloat($coin->api('balance')['response'][211984675]); //float(124414.662)
-```
-3. Получение Key
+* **Получение Key**
+
 ```php
 $coin->getKey();
 ```
-4. Получение MerchantId
+
+* **Получение MerchantId**
+
 ```php
 $coin->getMerchantId();
 ```
 
+* **Перевод числа с плавающей кочкой в коины**
 
-[IMGPHP]: https://img.shields.io/badge/PHP-5.4%5E-brightgreen.svg?style=for-the-badge
+```php
+$coin->toCoin(100.000); //100000
+$coin->toCoin(100.435); //100435
+``` 
+
+Пример: отправка 1 коина (1.000) пользователю:
+
+```php
+$coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->toCoin(1)]);//1000
+```
+
+* **Перевод коинов в число с плавающей кочкой**
+
+```php
+$coin->toFloat(100000); //100.000
+$coin->toFloat(100435); //100.435
+```
+
+Пример: запрос баланса мерча, разбор ответа, конвертация в float:
+
+```php
+$coin->toFloat($coin->api('balance')['response'][211984675]); //float(124414.662)
+```
+
+* **Получение процента (A) от числа (B)**
+
+```php
+$coin->toFloat($coin->getPercent(75, $coin->toCoin(1)));//75% от 1 коина (1,000)
+``` 
+
+Пример: 75% от 10.000 VKC = 7.500 VKC
+
+```php
+$coin->toFloat($coin->getPersent(75, $coin->toCoin(10)));
+```   
+
+* **Процент числа A от числа B**
+
+```php
+//Сколько процентов занимает 1 коин от 100 коинов
+$coin->whatPercent($coin->toFloat(1),$coin->toFloat(100));
+```
+
+Пример: во сколько процетов баланс магазина id539620705 больше баланса магазина id211984675. 
+
+```php
+    $coin->whatPercent($coin->toFloat($coin->api('balance',['userIds'=>[539620705]])['response'][539620705]),
+        $coin->toFloat($coin->api('balance')['response'][211984675]));   
+```   
+
+[IMGPHP]: https://img.shields.io/badge/PHP-7.1%5E-brightgreen.svg?style=for-the-badge
 [IMGLICENSE]: https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=for-the-badge
-[IMGVERSION]: https://img.shields.io/badge/LAST%20VERSION-1.1.0-red.svg?style=for-the-badge
+[IMGVERSION]: https://img.shields.io/badge/LAST%20VERSION-1.2.0-red.svg?style=for-the-badge
