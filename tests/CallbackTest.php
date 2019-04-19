@@ -41,6 +41,7 @@ try {
         return false;
     }
 } catch (VkCoinException $e) {
+    file_put_contents('trasn_уккщк.txt', $e);//запись последней удачной транзакции
     echo 'ok';
 }
 
