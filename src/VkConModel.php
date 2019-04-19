@@ -15,41 +15,49 @@ namespace nazbav\VkCoinAPI;
  */
 class VkConModel extends VkCoinController
 {
-
     /**
-     * @param $float
-     * @return int
+     * VkCoinController constructor.
+     * @param $merchantId
+     * @param $key
+     * @param bool $checkResponse
+     * @throws VkCoinException
      */
-    public function toCoin($float)
+    public function __construct($merchantId, $key, $checkResponse = true)
     {
-        return (int)($float * 1e3);
+        $this->setDir(dirname(dirname(__FILE__)));
+        if (!file_exists($this->getDir() . '/config/Language.php'))
+            throw new VkCoinException('Language.php is missing.');
+        else
+            $this->setMessages((new VkCoinMessages())->messages());
+        $this->setCheckResponse($checkResponse);
+        $this->setMerchantId($merchantId);
+        $this->setKey($key);
+        $this->params = [
+            'merchantId' => $merchantId,
+            'key' => $key
+        ];
     }
 
     /**
-     * @param $coin
-     * @return int
+     * @return CoinFunc
      */
-    public function toFloat($coin)
+    public function getFunc()
     {
-        return (float)($coin / 1e3);
+        return new CoinFunc($this->getMerchantId());
     }
 
     /**
-     * @param $float
-     * @return int
+     * @param $method
+     * @param array $parameters
+     * @return mixed
+     * @throws VkCoinException
      */
-    public function getPersent($per, $coin)
+    protected function api($method, $parameters = [])
     {
-        return (float)($per / 1e2) * $coin;
-    }
-
-    /**
-     * @param $float
-     * @return int
-     */
-    public function whatPersent($coin, $all)
-    {
-        return (float)($coin * 1e2) / $all;
+        $this->setParams($parameters);
+        $this->setResponse($this->callAPI($method));
+        $this->checkResponse();
+        return $this->getResponse();
     }
 
     /**

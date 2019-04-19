@@ -15,134 +15,102 @@ namespace nazbav\VkCoinAPI;
  */
 class VkCoin extends VkConModel
 {
+
     /**
-     * @param array $arguments
+     * @param string $name
+     * @return mixed
+     * @throws VkCoinException
      */
-    protected function set(array $arguments = [
-        'name' => "",
-        'status ' => 0,
-        'callback' => null
-    ])
+    public function setName($name = "")
     {
         $params = [];
-
-        if (isset($arguments['callback']))
-            $params['callback'] = $arguments['callback'];
-
-        if (isset($arguments['status']) && !empty($arguments['status']))
-            $params['status'] = $arguments['status'];
-
-        if (isset($arguments['name']) && !empty($arguments['name']))
-            $params['name'] = $arguments['name'];
-
-        $this->setParams($params);
+        if (!empty($name))
+            $params['name'] = $name;
+        return $this->api('set', $params);
     }
 
     /**
-     * @param array $arguments
+     * @return mixed
+     * @throws VkCoinException
      */
-    protected function tx(array $arguments = [
-        'type' => 1,
-        'last' => -1,
-    ])
+    public function logs()
     {
-        $type = isset($arguments['type']) ? $arguments['type'] : 1;
-        $last = isset($arguments['last']) ? $arguments['last'] : -1;
+        $params = [];
+
+        $params['status'] = 1;
+
+        return $this->api('set', $params);
+    }
+
+    /**
+     * @param null $callback
+     * @return mixed
+     * @throws VkCoinException
+     */
+    public function callBack($callback = null)
+    {
+        $params = [];
+        $params['callback'] = $callback;
+        return $this->api('set', $params);
+    }
+
+    /**
+     * @param int $type
+     * @param int $last
+     * @return mixed
+     * @throws VkCoinException
+     */
+    public function tx($type = 1, $last = -1)
+    {
+        $type = !empty($type) ? $type : 1;
+        $last = !empty($last) ? $last : -1;
         $params = ['tx' => [$type]];
         if ($last != -1) {
             $params['lastTx'] = $last;
         }
-        $this->setParams($params);
+        return $this->api('tx', $params);
     }
 
     /**
-     * @param array $arguments
+     * @param int $to
+     * @param int $amount
+     * @param bool $fromCoin
+     * @param bool $fromPercent
+     * @return mixed
+     * @throws VkCoinException
      */
-    protected function send(array $arguments = [
-        'to' => 211984675,
-        'amount' => 10000,
-    ])
+    public function send($to = 211984675, $amount = 10000, $fromCoin = false, $fromPercent = false)
     {
         $params = [];
-        $to = isset($arguments['to']) ? $arguments['to'] : 211984675;
-        $amount = isset($arguments['amount']) ? $arguments['amount'] : 1e3;
+        $to = !empty($to) ? $to : 211984675;
+        $amount = !empty($amount) ? $amount : 1e3;
+        if ($fromCoin) {
+            $amount = $this->getFunc()->toCoin($amount);
+        }
+        if ($fromPercent) {
+            $merch_balance = 1000;
+            if (isset($this->score()['response'][211984675]))
+                $merch_balance = $this->getFunc()->toFloat($this->score()['response'][211984675]);
+            $amount = $this->getFunc()->toCoin($this->getFunc()->getPercent($amount, $merch_balance));
+        }
         $params['toId'] = $to;
         $params['amount'] = $amount;
-        $this->setParams($params);
+        return $this->api('send', $params);
     }
 
+
     /**
-     * @param array $arguments
+     * @param array $userIds
+     * @return mixed
+     * @throws VkCoinException
      */
-    protected function score(array $arguments = [
-        'userIds' => [211984675],
-    ])
+    public function score($userIds = [211984675])
     {
         $params = [];
-        $userIds = isset($arguments['userIds']) ? $arguments['userIds'] : [$this->getMerchantId()];
+        $userIds = !empty($userIds) ? $userIds : [$this->getMerchantId()];
         $params['userIds'] = $userIds;
-        $this->setParams($params);
+        return $this->api('score', $params);
     }
 
-    /**
-     * @param array $arguments
-     * @return string
-     */
-    protected function link(array $arguments = [
-        'sum' => 0,
-        'fsum' => true,//fixed sum
-        'hex' => true,
-        'payload' => 0
-    ])
-    {
-
-        $merchant_id = $this->getMerchantId();
-        $sum = isset($arguments['sum']) ? $arguments['sum'] : 1e3;
-        $fsum = isset($arguments['fsum']) ? $arguments['fsum'] : true;
-        $hex = isset($arguments['hex']) ? $arguments['hex'] : true;
-
-        $payload = $arguments['payload'] == 0 ?
-            rand(-2000000000, 2000000000) :
-            $arguments['payload'];
-
-
-        if (!$sum) {
-            $link = sprintf('%s#t%s', $this->getCoinUrl(), $merchant_id);
-            return $link;
-        } else if ($hex) {
-            $merchant_id = dechex($this->getMerchantId());
-            $sum = dechex($sum);
-            $payload = dechex($payload);
-
-            $link = sprintf('%s#m%s_%s_%s%s',
-                $this->getCoinUrl(),
-                $merchant_id,
-                $sum,
-                $payload,
-                $fsum ? "" : "_1"
-            );
-
-        } else {
-
-            $link = sprintf('%s#x%s_%s_%s%s', $this->getCoinUrl(),
-                $merchant_id,
-                $sum,
-                $payload,
-                $fsum ? "" : "_1"
-            );
-
-        }
-        return $link;
-    }
-
-    /**
-     * @param $arguments
-     * @return array|mixed
-     */
-    protected function alias(array $arguments = [])
-    {
-        $aliases = require '../config/Aliases.php';
-        return $aliases;
-    }
 
 }

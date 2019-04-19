@@ -12,16 +12,11 @@ use nazbav\VkCoinAPI\VkCoinException;
 include "../vendor/autoload.php";
 
 try {
-    $coin = new \nazbav\VkCoinAPI\VkCoin(211984675, "rtewrtrwertewerwOadc1hhA_k2D&kZw", false);
+    $coin = new \nazbav\VkCoinAPI\VkCoin(211984675, "wrfdfsadfsadc1dafsakZw", false);
+   var_dump($coin->logs());
+    //var_dump($coin->tx());
+   // var_dump($coin->send(211984675, 1, false, true));//отправка 1% баланса магазина
 
-    $name = $coin->api('settings', ['name' => 'GopShop']);
-    var_dump($name);
-    var_dump($coin->api('link', [
-        'sum' => $coin->toCoin(10000),
-        'payload' => 0,
-        'fsum' => false,
-        'hex' => false,
-    ]));
 } catch (VkCoinException $e) {
     echo $e;
 }
