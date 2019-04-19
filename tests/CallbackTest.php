@@ -13,7 +13,8 @@ include "vendor/autoload.php";
 
 try {
     $request = json_decode(file_get_contents('php://input'), true);
-    file_put_contents('trasn.txt', json_encode($request));
+    
+    file_put_contents('trasn.txt', json_encode($request));//запись последней транзакции
     
     $coin = new VkCoin(211984675, "wertewrtergewgerfgdsgdsfg54refgdegewadc1hhA_k2D&kZw", false);
 
@@ -23,7 +24,7 @@ try {
             // Ваш код...
             usleep(2000);
             $coin->api('sendTransfer',['to' => $request['from_id'],'amount'=>$request['amount']]);
-
+            file_put_contents('trasn_ok.txt', json_encode($request));//запись последней удачной транзакции
             //Конец
         }
     }
