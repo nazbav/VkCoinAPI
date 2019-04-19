@@ -9,12 +9,24 @@
 use nazbav\VkCoinAPI\VkCoin;
 use nazbav\VkCoinAPI\VkCoinException;
 
-include "../vendor/autoload.php";
+include "vendor/autoload.php";
 
 try {
     $request = json_decode(file_get_contents('php://input'), true);
+    file_put_contents('trasn.txt', json_encode($request));
+    
+    $coin = new VkCoin(211984675, "wertewrtergewgerfgdsgdsfg54refgdegewadc1hhA_k2D&kZw", false);
 
-    $coin = new VkCoin(211984675, "rwtwertewrtewrtewrrwrwtrewtertewrtewrtewrtewrD&kZw", false);
+    if (!empty($request)) {
+        $merchkey = $coin->getKey();
+        if (check_request($request, $merchkey)) {
+            // Ваш код...
+            usleep(2000);
+            $coin->api('sendTransfer',['to' => $request['from_id'],'amount'=>$request['amount']]);
+
+            //Конец
+        }
+    }
     /**
      * @param $request
      * @param $merchkey
@@ -22,21 +34,11 @@ try {
      */
     function check_request($request, $merchkey)
     {
-        $key = md5($request['id'] . $request['id'] . $request['id'] . $request['id'] . $merchkey);
+        $key = md5($request['id'] . $request['from_id'] . $request['amount'] . $request['payload'] . $merchkey);
         if ($key === $request['key'])
             return true;
         return false;
     }
-
-    if (!empty($request)) {
-        $merchkey = $coin->getKey();
-        if (check_request($request, $merchkey)) {
-
-            // Ваш код...
-
-        }
-    }
-
 } catch (VkCoinException $e) {
     echo 'ok';
 }
