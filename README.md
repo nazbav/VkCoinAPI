@@ -1,7 +1,5 @@
 # VK Coin API
 
-ДОКУМЕНТАЦИЯ НЕ СОВМЕСТИМА С ВЕРСИЕЙ 2.0.0
-
 Задать вопрос можно в [беседе](https://vk.me/join/AJQ1d6PnhgV0xKfFdpK3ChdC). 
 Библиотека для работы с VK Coin API. Основана на "[документации](https://vk.com/@hs-marchant-api)", 
 и библиотеке [Матвея Вишневсого](https://github.com/slmatthew/vk-coin-php).
@@ -43,43 +41,37 @@ try {
 
 ## Функции
 
-Для получения данных неоходимо выполнить функцию вида:
-
-```php
-   $coin->api('метод или псевдоним', [массив параметров]);
-```
-
-## CallBack | Транзакции
+#### CallBack | Транзакции
 
 Установка callBack.
 
 ```php
-    $coin->api('set', ['callback' => 'https://example.org/callback']);
+    $coin->callBack('https://example.org/callback');
 ```
-
-| Параметр | Тип    | Описание                        |
-|----------|--------|--------------------------------|
-| url      | string | Адрес для отправки уведомлений |
 
 Удаление callBack.
 ```php
-    $coin->api('set');
+    $coin->callBack();
 ```
+
+| Параметр | Тип    | Описание                       |
+|----------|--------|--------------------------------|
+| url      | string | Адрес для отправки уведомлений |
 
 Получение списка неудавшихся запросов
 ```php
-    $coin->api('set', ['status' => 1]);
+    $coin->logs();
 ```
 
 | Параметр | Тип    | Описание                       |
 |----------|--------|--------------------------------|
 | status   | int    | Получение логов                |
 
-## Настройка магазина
+#### Настройка магазина
 
 Установка названия магазина
 ```php
-    $coin->api('set', ['name' => 'CoinShop']);
+    $coin->setName('CoinShop');
 ```
 
 | Параметр | Тип    | Описание          |
@@ -87,10 +79,11 @@ try {
 | name     | string | Название магазина |
 
 
-## Получение списка транзакций
+#### Получение списка транзакций
 Пример:
 ```php
-    $coin->api('getTransactions', ['type' => 2, 'last' => -1]);
+    $coin->tx(); //type 1 -- получение транзакций по ссылке
+    $coin->tx(2, -1); // получение транзакций магазина (первые 100)
 ```
 
 | Параметр     | Тип    |
@@ -98,52 +91,52 @@ try {
 | type      | int    |
 | last      | int    |
 
-## Перевод
+#### Перевод
 Пример:
 ```php
-$coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->toCoin(1)]);
+$coin->send(211984675, $coin->toCoin(1));//Отправка одного коина
+$coin->send(211984675, 1, false, true);//отправка 1% баланса магазина
+$coin->send(211984675, 1, true);//отправка 1 коина
 ```
 
 | Параметр     | Тип    | Описание                                             |
 |--------------|--------|------------------------------------------------------|
-| to           | int    | ID пользователя, которому будет отправлен перевод       |
+| to           | int    | ID пользователя, которому будет отправлен перевод    |
 | amount       | int    | Сумма перевода в тысячных долях (500 = 0,500 коин)   |
+| fromFloat    | bool   | amount задан в float (см. функции библиотеки ниже)?  |
+| fromPercent  | bool   | amount задан в процентах?                            |
 
-## Получение баланса
+#### Получение баланса
 Пример:
 ```php
-$coin->api('getBalance');
-$coin->api('getBalance',['userIds' => [211984675]]);
-$coin->api('getBalance'); //Для вывода баланса текущего пользователя
+$coin->score([211984675]);
+$coin->score(); //Для вывода баланса текущего пользователя
 ```
 
 | Параметр     | Тип    |
 |--------------|--------|
 | userIds      | array  |
 
-## Получение ссылки на оплату
+#### Получение ссылки на оплату
 Пример:
 ```php
-   $coin->api('getPayLink');
-   $coin->api('getLink', ['sum' => 15000]);
-   $coin->api('link', ['sum' => 15000, 'payload' => 123456]);
-   $coin->api('link', [
-        'sum' => 15000,
-        'payload' => 0,
-        'fsum' => false
-    ]);
+   $coin->getFunc()->link(); // vk.com/coin#tMERCHANTID - сылка для **обычной** оплаты!
+   $coin->getFunc()->link(15000);//sum
+   $coin->getFunc()->link(15000, 123456); //sum, payload
+   $coin->getFunc()->link(15000, 0, false); //sum, payload, fixed_sum = false
+      $coin->getFunc()->link(15000, 0, false, false); //sum, payload, fixed_sum = false, hex = false
 ```
 
 | Параметр     | Тип     | Описание                                                                       |                                                                                              
 |--------------|--------|---------------------------------------------------------------------------------|
 | sum          | int    | Сумма перевода                                                                  |
 | payload      | int    | Любое число от -2000000000 до 2000000000. Поставь 0, дальше сделаем все сами ;) |
-| fsum         | bool   | Фиксация суммы перевода                                                         |
+| fixed_sum    | bool   | Фиксация суммы перевода                                                         |
 | hex          | bool   | Генерация hex-ссылки                                                            |
 
 
 
-## Псевдонимы (Aliases)
+#### Псевдонимы (Aliases)
 
 Их вы можете указывать в параметре метода, для упращения работы.
 
@@ -163,7 +156,7 @@ $coin->api('getBalance'); //Для вывода баланса текущего 
 | score     | getBalance         | Баланс игрока                           |
 | score     | balance            | Баланс игрока                           |
 
-## Формат ответа
+#### Формат ответа
 
 | Имя поля     | Тип    |  Описание                                                                   |
 |--------------|--------|-----------------------------------------------------------------------------|
@@ -171,9 +164,9 @@ $coin->api('getBalance'); //Для вывода баланса текущего 
 | response     | array  | Массив с данными (за место него может быт выдан `error`)                    |
 | error        | array  | Для получения этого массива см. `Получение ошибок`
 
-Данному формату не подчиняются методы link и alias.
+Данному формату не подчиняются методы начинающиеся с ```$coin->getFunc()```.
 
-## Получение ошибок
+#### Получение ошибок
 
 По стандарту библиотека сама обрабатывает ошибки и выдает VkCoinException на этот счет.
 Для того чтобы самостоятельно обрабатывать ошибки необходимо передать всего один параметр при инициализации:
@@ -183,7 +176,7 @@ include "../vendor/autoload.php";
 
 $coin = new \nazbav\VkCoinAPI\VkCoin(211984675, "45vyv45KJMKouj9retghrebtvrhtrehryvt54ONopiino", true);
 ```
-## Error code 100
+#### Error code 100
 
 В случай если библиотеке не удалось получить данные c сервера, и т.д. (ошибки curl).
 Будет выдана 100 ошибка:
@@ -198,83 +191,83 @@ $coin = new \nazbav\VkCoinAPI\VkCoin(211984675, "45vyv45KJMKouj9retghrebtvrhtreh
 ```
 
 
-## Функции библиотеки
+#### Функции библиотеки
 
 **Получение Key**
 
 ```php
-$coin->getKey();
+$coin->getFunc()->getMerchkey();
 ```
 
 **Получение MerchantId**
 
 ```php
-$coin->getMerchantId();
+$coin->getFunc()->getMerchantId();
 ```
 
 **Перевод числа с плавающей точкой в коины**
 
 ```php
-$coin->toCoin(100.000); //100000
-$coin->toCoin(100.435); //100435
+$coin->getFunc()->toCoin(100.000); //100000
+$coin->getFunc()->toCoin(100.435); //100435
 ``` 
 
 Пример: отправка 1 коина (1.000) пользователю:
 
 ```php
-$coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->toCoin(1)]);//1000
-$coin->api('sendTransfer',['to' => 211984675,'amount'=>$coin->toCoin(1.000)]);//1000
+$coin->send(211984675, $coin->getFunc()->toCoin(1));//1000
+$coin->send(211984675, $coin->getFunc()->toCoin(1.000));//1000
 ```
 
 **Перевод коинов в число с плавающей точкой**
 
 ```php
-$coin->toFloat(100000); //100.000
-$coin->toFloat(100435); //100.435
+$coin->getFunc()->toFloat(100000); //100.000
+$coin->getFunc()->toFloat(100435); //100.435
 ```
 
 Пример: запрос баланса мерча, разбор ответа, конвертация в float:
 
 ```php
-$coin->toFloat($account1); //float(124414.662)
+$coin->getFunc()->toFloat($account1); //float(124414.662)
 ```
 
 **Получение процента (A) от числа (B)**
 
 ```php
-$coin->toFloat($coin->getPercent(75, $coin->toCoin(1)));//75% от 1 коина (1,000)
+$coin->getFunc()->toFloat($coin->getFunc()->getPercent(75, $coin->getFunc()->toCoin(1)));//75% от 1 коина (1,000)
 ``` 
 
 Пример: 75% от 10.000 VKC = 7.500 VKC:
 
 ```php
-$coin->toFloat($coin->getPersent(75, $coin->toCoin(10)));
+$coin->getFunc()->toFloat($coin->getFunc()->getPersent(75, $coin->getFunc()->toCoin(10)));
 ```   
 
 **Процент числа A от числа B**
 
 ```php
 //Сколько процентов занимает 1 коин от 100 коинов
-$coin->whatPercent($coin->toFloat(1),$coin->toFloat(100));
+$coin->getFunc()->whatPercent($coin->getFunc()->toFloat(1),$coin->getFunc()->toFloat(100));
 ```
 
 Пример: на сколько процетов баланс пользователя id539620705 больше баланса пользователя id211984675:
 
 ```php
-$coin->whatPersent($account2, $account1)
+$coin->getFunc()->whatPercent($account2, $account1)
 ```   
 Сколько процентов составляет баланс пользователя id211984675 от баланса пользователя id539620705:
 ```php
-$coin->whatPersent($account1, $account2)
+$coin->getFunc()->whatPercent($account1, $account2)
 ```   
 
 Даные в примерах:
 ```php
- $balance = $coin->api('balance', ['userIds' => [539620705, 211984675]])['response'];
-     $account1 = $balance[211984675];
+ $balance = $coin->score([539620705, 211984675])['response'];
+    $account1 = $balance[211984675];
     $account2 = $balance[539620705];
 ```
 
 [IMGPHP]: https://img.shields.io/badge/PHP-7.1%5E-brightgreen.svg?style=for-the-badge
 [IMGLICENSE]: https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=for-the-badge
-[IMGVERSION]: https://img.shields.io/badge/LAST%20VERSION-1.3.0-red.svg?style=for-the-badge
+[IMGVERSION]: https://img.shields.io/badge/LAST%20VERSION-2.0.0-red.svg?style=for-the-badge
