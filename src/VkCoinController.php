@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Назым
- * Date: 15.04.2019
- * Time: 20:07
- */
+
 
 namespace nazbav\VkCoinAPI;
 
@@ -15,163 +10,87 @@ namespace nazbav\VkCoinAPI;
  */
 abstract class VkCoinController
 {
+
     /**
-     * @var string
-     */
-    const HOSTNAME = 'coin-without-bugs.vkforms.ru/merchant';
-    /**
-     * @var string
+     *
      */
     const COIN_URL = 'vk.com/coin';
+
+    /**
+     *
+     */
+    const HOSTNAME = 'coin-without-bugs.vkforms.ru/merchant';
 
     /**
      * @var
      */
     protected $directory;
+
     /**
-     * @var array | string
+     * @var
      */
     protected $response;
+
     /**
      * @var bool
      */
     protected $checkResponse = true;
+
     /**
-     * @var array
+     * @var
      */
     protected $messages;
+
     /**
-     * @var array
+     * @var
      */
     protected $params;
+
     /**
      * @var string
      */
     protected $merchkey = "";
+
     /**
      * @var int
      */
     protected $merchantId = 0;
 
+
     /**
-     * VkCoinController constructor.
+     * @return string
+     */
+    protected function getMerchkey()
+    {
+        return $this->merchkey;
+    }
+
+
+    /**
+     * @param $merchkey
+     */
+    protected function setMerchkey($merchkey)
+    {
+        $this->merchkey = $merchkey;
+    }
+
+    /**
+     * @return int
+     */
+    protected function getMerchantId()
+    {
+        return $this->merchantId;
+    }
+
+
+    /**
      * @param $merchantId
-     * @param $key
-     * @param bool $checkResponse
-     * @throws VkCoinException
      */
-    public function __construct($merchantId, $key, $checkResponse = true)
+    protected function setMerchantId($merchantId)
     {
-        $this->setDir(dirname(dirname(__FILE__)));
-        if (!file_exists($this->getDir() . '/config/Language.php'))
-            throw new VkCoinException('Language.php is missing.');
-        else
-            $this->setMessages((new VkCoinMessages())->messages());
-        if (!file_exists($this->getDir() . '/config/Aliases.php'))
-            throw new VkCoinException($this->getMessages()['COIN_FATAL_ALIASES']);
-        $this->setCheckResponse($checkResponse);
-        $this->setMerchantId($merchantId);
-        $this->setKey($key);
-        $this->params = [
-            'merchantId' => $merchantId,
-            'key' => $key
-        ];
+        $this->merchantId = $merchantId;
     }
 
-    /**
-     * @param mixed $dir
-     */
-    protected function setDir($dir)
-    {
-        $this->directory = $dir;
-    }
-
-    /**
-     * @return mixed
-     */
-    protected function getDir()
-    {
-        return $this->directory;
-    }
-
-    /**
-     * @param $Messages
-     */
-    private function setMessages(array $Messages)
-    {
-        $this->messages = $Messages;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getMessages()
-    {
-        return $this->messages;
-    }
-
-    /**
-     * @param string $key
-     */
-    protected function setKey($key)
-    {
-        $this->merchkey = $key;
-    }
-
-    /**
-     * @return mixed
-     */
-
-    /**
-     * @param $method
-     * @param $parameters
-     * @return mixed
-     */
-    public function api($method, $parameters = [])
-    {
-        $aliases = [];
-        if (file_exists($this->getDir() . '/config/Aliases.php')) $aliases = require $this->getDir() . '/config/Aliases.php';
-        //Алиасы для методов.
-        $method = strtr($method, $aliases);
-        if ($parameters)
-            $response = $this->$method($parameters);
-        else
-            $response = $this->$method();
-        if ($response)
-            $this->setResponse($response);
-        else {
-            $this->setResponse($this->callAPI($method));
-            $this->checkResponse();
-        }
-        return $this->getResponse();
-    }
-
-    /**
-     * @param $method
-     * @return mixed
-     */
-    abstract protected function callAPI($method);
-
-    /**
-     * @return void
-     */
-    abstract protected function checkResponse();
-
-    /**
-     * @return mixed
-     */
-    protected function getResponse()
-    {
-        return $this->response;
-    }
-
-    /**
-     * @param array|string $response
-     */
-    public function setResponse($response)
-    {
-        $this->response = $response;
-    }
 
     /**
      * @param $name
@@ -183,44 +102,22 @@ abstract class VkCoinController
         throw new VkCoinException($this->getMessages()['COIN_METHOD_ERROR']);
     }
 
-    /**
-     * @return string
-     */
-    public function getKey()
-    {
-        return $this->merchkey;
-    }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getMerchantId()
+    protected function getMessages()
     {
-        return $this->merchantId;
+        return $this->messages;
     }
 
-    /**
-     * @param int $merchantId
-     */
-    protected function setMerchantId($merchantId)
-    {
-        $this->merchantId = $merchantId;
-    }
 
     /**
-     * @return bool
+     * @param array $Messages
      */
-    protected function getCheckResponse()
+    protected function setMessages(array $Messages)
     {
-        return $this->checkResponse;
-    }
-
-    /**
-     * @param bool $checkResponse
-     */
-    protected function setCheckResponse($checkResponse)
-    {
-        $this->checkResponse = $checkResponse;
+        $this->messages = $Messages;
     }
 
     /**
@@ -231,13 +128,60 @@ abstract class VkCoinController
         return self::COIN_URL;
     }
 
+
     /**
-     * @return array
+     * @return mixed
+     */
+    protected function getDirectory()
+    {
+        return $this->directory;
+    }
+
+
+    /**
+     * @param $directory
+     */
+    protected function setDirectory($directory)
+    {
+        $this->directory = $directory;
+    }
+
+
+    /**
+     * @param $dir
+     */
+    protected function setDir($dir)
+    {
+        $this->directory = $dir;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    protected function getDir()
+    {
+        return $this->directory;
+    }
+
+
+    /**
+     * @param $key
+     */
+    protected function setKey($key)
+    {
+        $this->merchkey = $key;
+    }
+
+
+    /**
+     * @return mixed
      */
     protected function getParams()
     {
         return $this->params;
     }
+
 
     /**
      * @param array $params
@@ -247,6 +191,43 @@ abstract class VkCoinController
         $this->params = array_merge($this->params, $params);
     }
 
+
+    /**
+     * @return bool
+     */
+    protected function getCheckResponse()
+    {
+        return $this->checkResponse;
+    }
+
+
+    /**
+     * @param $checkResponse
+     */
+    protected function setCheckResponse($checkResponse)
+    {
+        $this->checkResponse = $checkResponse;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    protected function getResponse()
+    {
+        return $this->response;
+    }
+
+
+    /**
+     * @param $response
+     */
+    protected function setResponse($response)
+    {
+        $this->response = $response;
+    }
+
+
     /**
      * @return string
      */
@@ -254,11 +235,4 @@ abstract class VkCoinController
     {
         return self::HOSTNAME;
     }
-
-    /**
-     * @param $host
-     * @param $parameters
-     * @return mixed
-     */
-    abstract protected function postCurl($host, $parameters);
 }

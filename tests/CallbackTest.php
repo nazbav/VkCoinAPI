@@ -9,22 +9,25 @@
 use nazbav\VkCoinAPI\VkCoin;
 use nazbav\VkCoinAPI\VkCoinException;
 
-include "vendor/autoload.php";
+include "../vendor/autoload.php";//WARNING: or "vendor/autoload.php";
 
 try {
     $request = json_decode(file_get_contents('php://input'), true);
-    
-    file_put_contents('trasn.txt', json_encode($request));//запись последней транзакции
-    
+
     $coin = new VkCoin(211984675, "wertewrtergewgerfgdsgdsfg54refgdegewadc1hhA_k2D&kZw", false);
 
     if (!empty($request)) {
-        $merchkey = $coin->getKey();
+
+        file_put_contents('trans.txt', json_encode($request));//запись последней транзакции
+
+        $merchkey = $coin->getFunc()->getMerchkey();
+
         if (check_request($request, $merchkey)) {
             // Ваш код...
-            usleep(2000);
-            $coin->api('sendTransfer',['to' => $request['from_id'],'amount'=>$request['amount']]);
-            file_put_contents('trasn_ok.txt', json_encode($request));//запись последней удачной транзакции
+            $to = $request['from_id'];
+            $amount = $request['amount'];
+            $coin->send($to, $amount);//Возвращаем бабосики)))
+            file_put_contents('trans_ok.txt', json_encode($request));//запись последней удачной транзакции
             //Конец
         }
     }
@@ -41,9 +44,8 @@ try {
         return false;
     }
 } catch (VkCoinException $e) {
-    file_put_contents('trasn_уккщк.txt', $e);//запись последней удачной транзакции
+    file_put_contents('trans_error.txt', $e);//запись последней удачной транзакции
     echo 'ok';
 }
-
 
 echo 'ok';
