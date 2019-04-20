@@ -35,9 +35,7 @@ class CoinFunc extends CoinFuncModel
 
         $merchant_id = $this->getMerchantId();
         $sum = !empty($sum) ? $sum : 1e3;
-        $fixed_sum = !empty($fixed_sum) ? $fixed_sum : true;
-        $hex = !empty($hex) ? $hex : true;
-        $payload = $payload == 0 ? rand(-2000000000, 2000000000) : $payload;
+        $payload = empty($payload) ? rand(-2000000000, 2000000000) : $payload;
 
 
         if (!$sum) {
