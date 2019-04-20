@@ -30,7 +30,7 @@ class CoinFunc extends CoinFuncModel
      * @param int $payload
      * @return string
      */
-    public function link($sum = 0, $fixed_sum = true, $hex = true, $payload = 0)
+    public function link($sum = 0, $payload = 0, $fixed_sum = true, $hex = true)
     {
 
         $merchant_id = $this->getMerchantId();

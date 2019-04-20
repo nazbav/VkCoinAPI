@@ -74,17 +74,17 @@ class VkCoin extends VkConModel
     /**
      * @param int $to
      * @param int $amount
-     * @param bool $fromCoin
+     * @param bool $fromFloat
      * @param bool $fromPercent
      * @return mixed
      * @throws VkCoinException
      */
-    public function send($to = 211984675, $amount = 10000, $fromCoin = false, $fromPercent = false)
+    public function send($to = 211984675, $amount = 10000, $fromFloat = false, $fromPercent = false)
     {
         $params = [];
         $to = !empty($to) ? $to : 211984675;
         $amount = !empty($amount) ? $amount : 1e3;
-        if ($fromCoin) {
+        if ($fromFloat) {
             $amount = $this->getFunc()->toCoin($amount);
         }
         if ($fromPercent) {
@@ -104,7 +104,7 @@ class VkCoin extends VkConModel
      * @return mixed
      * @throws VkCoinException
      */
-    public function score($userIds = [211984675])
+    public function score($userIds = [])
     {
         $params = [];
         $userIds = !empty($userIds) ? $userIds : [$this->getMerchantId()];
