@@ -24,6 +24,19 @@ class CoinFunc extends CoinFuncModel
 
 
     /**
+     * @param $id
+     * @param $from_id
+     * @param $amount
+     * @param $payload
+     * @param $key
+     * @return bool
+     */
+    public function validationKey($id, $from_id, $amount, $payload, $key)
+    {
+        return md5(implode(';', [$id, $from_id, $amount, $payload, $this->getMerchkey()])) === $key;
+    }
+
+    /**
      * @param int $sum
      * @param bool $fixed_sum
      * @param bool $hex

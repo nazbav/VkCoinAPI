@@ -14,6 +14,8 @@ include "../vendor/autoload.php";
 try {
     $coin = new \nazbav\VkCoinAPI\VkCoin(211984675, "wrfdfsadfsadc1dafsakZw", false);
    var_dump($coin->logs());
+   var_dump($coin->getFunc()->link());
+
     //var_dump($coin->tx());
    // var_dump($coin->send(211984675, 1, false, true));//отправка 1% баланса магазина
 
