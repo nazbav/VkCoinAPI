@@ -4,10 +4,14 @@
 Библиотека для работы с VK Coin API. Основана на "[документации](https://vk.com/@hs-marchant-api)", 
 и библиотеке [Матвея Вишневсого](https://github.com/slmatthew/vk-coin-php).
 
-  ![VERSION][IMGVERSION]
-  ![PHP][IMGPHP]
-  ![LICENSE][IMGLICENSE]
-  
+![](https://img.shields.io/packagist/php-v/nazbav/vk-coin-api?color=FF6F61&style=for-the-badge)
+![](https://img.shields.io/github/release/nazbav/vk-coin-api.svg?color=green&style=for-the-badge)
+![](https://img.shields.io/github/last-commit/nazbav/vk-coin-api.svg?style=for-the-badge)
+![](https://img.shields.io/github/repo-size/nazbav/vk-coin-api.svg?color=green&style=for-the-badge)
+![](https://img.shields.io/github/commit-activity/m/nazbav/vk-coin-api.svg?style=for-the-badge)
+[![](https://img.shields.io/packagist/dt/nazbav/vk-coin-api.svg?style=for-the-badge)](https://packagist.org/packages/nazbav/vk-coin-api/)
+[![](https://img.shields.io/github/issues/nazbav/vk-coin-api.svg?style=for-the-badge)](https://github.com/nazbav/vk-coin-api/issues)
+
 ## Подключение
 
 ```bash
@@ -299,7 +303,3 @@ $coin->getFunc()->whatPercent($account1, $account2)
     $account1 = $balance[211984675];
     $account2 = $balance[539620705];
 ```
-
-[IMGPHP]: https://img.shields.io/badge/PHP-7.1%5E-brightgreen.svg?style=for-the-badge
-[IMGLICENSE]: https://img.shields.io/badge/LICENSE-MIT-yellow.svg?style=for-the-badge
-[IMGVERSION]: https://img.shields.io/badge/LAST%20VERSION-2.0.0-red.svg?style=for-the-badge
