@@ -1,8 +1,7 @@
 # VK Coin API
 
 Задать вопрос можно в [беседе](https://vk.me/join/AJQ1d6PnhgV0xKfFdpK3ChdC). 
-Библиотека для работы с VK Coin API. Основана на "[документации](https://vk.com/@hs-marchant-api)", 
-и библиотеке [Матвея Вишневсого](https://github.com/slmatthew/vk-coin-php).
+Библиотека для работы с VK Coin API. Основана на "[документации](https://vk.com/@hs-marchant-api)".
 
 ![](https://img.shields.io/packagist/php-v/nazbav/vk-coin-api?color=FF6F61&style=for-the-badge)
 ![](https://img.shields.io/github/release/nazbav/vk-coin-api.svg?color=green&style=for-the-badge)
