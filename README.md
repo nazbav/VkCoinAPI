@@ -286,19 +286,18 @@ $coin->getFunc()->toFloat($coin->getFunc()->getPersent(75, $coin->getFunc()->toC
 $coin->getFunc()->whatPercent($coin->getFunc()->toFloat(1),$coin->getFunc()->toFloat(100));
 ```
 
-Пример: на сколько процетов баланс пользователя id539620705 больше баланса пользователя id211984675:
+Пример: на сколько процетов баланс пользователя id1* больше баланса пользователя id2*:
 
 ```php
 $coin->getFunc()->whatPercent($account2, $account1)
 ```   
-Сколько процентов составляет баланс пользователя id211984675 от баланса пользователя id539620705:
+Сколько процентов составляет баланс пользователя id2* от баланса пользователя id1*:
 ```php
 $coin->getFunc()->whatPercent($account1, $account2)
 ```   
 
 Даные в примерах:
 ```php
- $balance = $coin->score([539620705, 211984675])['response'];
-    $account1 = $balance[211984675];
-    $account2 = $balance[539620705];
+ $balance = $coin->score([1*, 2*])['response'];
+    $account1 = $balance[2*];
 ```
